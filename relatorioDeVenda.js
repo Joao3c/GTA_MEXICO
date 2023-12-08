@@ -38,3 +38,4 @@ if (cargo === "gerente") {
 } else {
     console.log("Cargo inválido!");
 }
+;
