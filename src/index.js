@@ -15,9 +15,13 @@ client.on("messageCreate", message => {
     const CHANNEL_BOT_HARU = "404672946179670018";
     const CHANNEL_BOT_MEXICO = "1182730291731767315";
 
-    if (message.channelId === CHANNEL_BOT || message.channelId === CHANNEL_BOT_MEXICO) return
+    if (message.channelId === CHANNEL_BOT_HARU || message.channelId === CHANNEL_BOT_MEXICO) {
 
-    console.log("Oi");
+        
+
+    }
+
+
 
 })
 
