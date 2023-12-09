@@ -1,8 +1,27 @@
-const Discord = require("discord.js");
+const {Client, GatewayIntentBits, Partials} = require("discord.js");
 const config = require("./config.json")
+const Venda = require("./Venda")
+const Vendedor = require("./Vendedor")
+const Municao = require("./Municao")
 
-const client = new Discord.Client({
-    intents: ["Guilds", "GuildMessages"]
+const fajuta = new Municao("Fajuta", "fajuta", 600);
+const five = new Municao("Five Seven", "five", 900);
+const mp5 = new Municao("MP5", "mp5", 1000);
+const tec9 = new Municao("TEC9", "tec9", 1000);
+const ak47 = new Municao("AK-47", "ak", 1000);
+const mk2 = new Municao("AK-MK2", "mk2", 1400);
+const g3 = new Municao("G3", "g3", 1500);
+
+const municoes = [fajuta, five, mp5, tec9, ak47, mk2, g3]
+
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+    partials: [ Partials.Channel ]
 });
 
 client.on("ready", ()=>{
@@ -11,18 +30,57 @@ client.on("ready", ()=>{
 
 client.on("messageCreate", message => {
     if (message.author.id === client.user.id) return;
+    console.log(message.content)
 
     const CHANNEL_BOT_HARU = "404672946179670018";
-    const CHANNEL_BOT_MEXICO = "1182730291731767315";
+    const CHANNEL_BOT_MEXICO = "1170392516953120898";
+    const PREFIX = "/";
+        
 
     if (message.channelId === CHANNEL_BOT_HARU || message.channelId === CHANNEL_BOT_MEXICO) {
 
-        
+        if (message.content.split(" ").length !== 3) return;
 
+        if (isNaN(message.content.split(" ")[0]) == false) {
+
+            const QUANT = parseInt(message.content.split(" ")[0]);
+            const NOME = message.content.split(" ")[1].toLowerCase();
+            const ROLES = message.member.roles.cache;
+
+            vendedor = new Vendedor(message.member.nickname, message.author.id, ROLES);            
+
+            municoes.forEach( municao => {
+                if (municao.subnome === NOME) {
+                    venda = new Venda(municao, QUANT, vendedor)
+                    venda.verificarParceria(message.content.split(" ")[2].toLowerCase())
+                    venda.calcularVenda()
+                }
+            })
+            console.log(message.author)
+
+
+            message.channel.messages.fetch(message.id)
+            .then(msg => {
+                msg.delete()
+                .then(()=> {console.log('Mensagem deletada')}) 
+                .catch(error=>console.error(error)); 
+            })
+            .catch(error=>console.error(error));
+
+
+            message.channel.send(`\`\`\`
+Nome: ${venda.municao.nome}
+Quant: ${venda.quantidade}
+Valor Venda: ${venda.valorVenda}
+Valor Deposito: ${venda.valorDeposito}
+Vendedor: @${venda.vendedor.nome}\`\`\``
+            )
+
+        
+        }
     }
 
-
-
+    
 })
 
 client.login(config.token)
