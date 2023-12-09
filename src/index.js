@@ -24,20 +24,23 @@ const client = new Client({
     partials: [ Partials.Channel ]
 });
 
+
+
 client.on("ready", ()=>{
     console.log(`Logged in as ${client.user.tag}!`)
 });
 
 client.on("messageCreate", message => {
     if (message.author.id === client.user.id) return;
-    console.log(message.content)
 
     const CHANNEL_BOT_HARU = "404672946179670018";
-    const CHANNEL_BOT_MEXICO = "1170392516953120898";
+    const CHANNEL_BOT_MEXICO_RELATORIO = "1170392516953120898";
+    const CHANNEL_BOT_MEXICO_TESTE = "1182730291731767315";
+
     const PREFIX = "/";
         
 
-    if (message.channelId === CHANNEL_BOT_HARU || message.channelId === CHANNEL_BOT_MEXICO) {
+    if (message.channelId === CHANNEL_BOT_HARU || message.channelId === CHANNEL_BOT_MEXICO_RELATORIO || message.channelId === CHANNEL_BOT_MEXICO_TESTE) {
 
         if (message.content === "!ajuda") {
             message.reply(`
@@ -74,6 +77,8 @@ Nome das Munições:
 
             municoes.forEach( municao => {
                 if (municao.subnome === NOME) {
+                    console.log("-------------------------------------")
+                    console.log(message.content)
                     venda = new Venda(municao, QUANT, vendedor)
                     venda.verificarParceria(message.content.split(" ")[2].toLowerCase())
                     venda.calcularVenda()
@@ -88,10 +93,11 @@ Nome das Munições:
             })
             .catch(error=>console.error(error));
 
-
-            message.channel.send(`\`\`\`
+            message.channel.send(`
+<@${venda.vendedor.id_discord}>\`\`\`
 Nome: ${venda.municao.nome}
 Quant: ${venda.quantidade}
+parceria: ${venda.parceria == true ? "Sim":"Não"}
 Valor Venda: ${venda.valorVenda}
 Valor Deposito: ${venda.valorDeposito}
 Vendedor: @${venda.vendedor.nome}\`\`\``
