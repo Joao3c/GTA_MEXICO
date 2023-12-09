@@ -19,6 +19,7 @@ let municaoEscolhida = prompt("Escolha a munição (fajuta/five/mp5/tec9/ak_47/a
 let qtd = prompt("Quantas muni vc deseja?");
 
 if (cargo === "gerente") {
+    
     valor = municao[municaoEscolhida] * qtd;
     deposito = valor * gerente / 100;
     parceria = valor - desconto;
@@ -27,7 +28,9 @@ if (cargo === "gerente") {
     console.log(`Valor: ${valor}`);
     console.log(`Depósito: ${deposito}`);
     console.log(`Parceria: ${parceria}`);
+
 } else if (cargo === "subLider") {
+
     valor = municao[municaoEscolhida] - qtd;
     deposito = valor - subLider;
     parceria = valor - desconto;
@@ -35,7 +38,9 @@ if (cargo === "gerente") {
     console.log(`Valor: ${valor}`);
     console.log(`Depósito: ${deposito}`);
     console.log(`Parceria: ${parceria}`);
+
 } else {
+
     console.log("Cargo inválido!");
+
 }
-;
