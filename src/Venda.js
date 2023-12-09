@@ -40,14 +40,15 @@ class Venda {
         } else {
             this.valorDeposito = this.valorVenda - (this.valorVenda * 0.25);
         }
-/*
-        console.log(this.municao)
-        console.log(this.quantidade)
-        console.log(this.parceria)
-        console.log(this.valorVenda)
-        console.log(this.valorDeposito)
-        console.log(this.vendedor)
-*/
+
+
+        console.log("Municao: " + this.municao)
+        console.log("Quantidade: " + this.quantidade)
+        console.log("Parceria: " + this.parceria)
+        console.log("Valor Venda: " + this.valorVenda)
+        console.log("Valor Deposito: " + this.valorDeposito)
+        console.log("Vendedor: " + this.vendedor)
+
     }
 }
 
